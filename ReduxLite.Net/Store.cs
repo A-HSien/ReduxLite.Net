@@ -18,6 +18,14 @@ namespace ReduxLite.Net
         /// Construction
         /// </summary>
         /// <param name="logger"></param>
+        public Store()
+        {
+        }
+
+        /// <summary>
+        /// Construction
+        /// </summary>
+        /// <param name="logger"></param>
         public Store(ILogger<Store<TState, TKey>> logger)
         {
             _logger = logger;
@@ -185,7 +193,7 @@ namespace ReduxLite.Net
         /// <returns></returns>
         public TState GetState(TState target, IEnumerable<Action<TKey>> actions)
         {
-            actions.OrderBy(a => a.CreateTime).Aggregate(target, (states, action) => states = applyReducers(states, action));
+            foreach (var action in actions.OrderBy(a => a.CreateTime)) target = applyReducers(target, action);
             return target;
         }
 
@@ -193,7 +201,7 @@ namespace ReduxLite.Net
         {
             _reducerMap.TryGetValue(action.ActionType, out var reducers);
             if (reducers == null) return target;
-            reducers.Aggregate(target, (states, reducer) => states = reducer.Handler(action, states));
+            foreach (var reducer in reducers) target = reducer.Handler(action, target);
             return target;
         }
     }
