@@ -11,17 +11,17 @@ namespace ReduxLite.Net
     public abstract class Action<TKey>
     {
         /// <summary>
-        /// 動作類型
+        /// Action Type
         /// </summary>
         public virtual string ActionType => this.GetType().FullName;
 
         /// <summary>
-        /// 建立時間
+        /// Create Time
         /// </summary>
         public virtual DateTime CreateTime { get; set; } = DateTime.UtcNow;
 
         /// <summary>
-        /// 操作目標的識別碼
+        /// Target Id
         /// </summary>
         public virtual TKey TargetId { get; set; }
     }
